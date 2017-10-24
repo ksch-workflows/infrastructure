@@ -12,12 +12,12 @@ BAHMNI_INVENTORY=local
 
 while getopts ":c:v:b:i" o; do
 	case "${o}" in
-		c)
-			BAHMNI_CONFIG_URL=${OPTARG}
-			;;
-		v)
-			VERSION=${OPTARG}
-			;;
+    c)
+      BAHMNI_CONFIG_URL=${OPTARG}
+      ;;
+    v)
+      VERSION=${OPTARG}
+      ;;
     b)
       BUILD_NUMBER=${OPTARG}
       ;;
@@ -29,6 +29,10 @@ while getopts ":c:v:b:i" o; do
 			;;
 	esac
 done
+
+# Workaround for https://gist.github.com/jmewes/6f3324c1fe72332e8885cc45c56f5229
+yum install -y ftp://195.220.108.108/linux/Mandriva/devel/cooker/x86_64/media/contrib/release/mx-1.4.5-1-mdv2012.0.x86_64.rpm
+yum install -y bahmni-erp
 
 if [[ -z "${BAHMNI_CONFIG_URL}" || -z "${VERSION}" || -z "${BUILD_NUMBER}" ]]; then
 	echo "Missing parameter."

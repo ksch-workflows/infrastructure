@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure('2') do |config|
+
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.hostname = 'bahmni-dev'
+
+  config.vm.provider :digital_ocean do |provider, override|
+    override.ssh.private_key_path = '~/.ssh/id_bahmni_cloud'
+    override.vm.box = 'digital_ocean'
+    override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
+
+    provider.name = 'bahmni-dev'
+    provider.token = ENV['DIGITAL_OCEAN_TOKEN']
+    provider.image = 'centos-6-x64'
+    provider.region = 'fra1'
+    provider.size = '8GB'
+  end
+
+  config.vm.provision "shell", path: "../install-bahmni.sh"
+  config.vm.synced_folder "~/src/bahmni", "/bahmni", :owner => "bahmni"
+
+end
